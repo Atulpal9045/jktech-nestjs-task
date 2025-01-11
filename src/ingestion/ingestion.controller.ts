@@ -1,6 +1,6 @@
 import { Controller, Post, Get } from '@nestjs/common';
 import { IngestionService } from './ingestion.service';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { IngestionStatusDto } from './ingestion.dto';
 
 @ApiTags('Ingestion')
@@ -9,6 +9,7 @@ export class IngestionController {
   constructor(private readonly ingestionService: IngestionService) {}
 
   @Post('trigger')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Trigger the ingestion process' })
   @ApiResponse({
     status: 200,
@@ -26,6 +27,7 @@ export class IngestionController {
   }
 
   @Get('status')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get the status of the ingestion process' })
   @ApiResponse({
     status: 200,

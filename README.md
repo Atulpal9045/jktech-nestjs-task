@@ -34,12 +34,13 @@ This project implements a backend service using **NestJS** for managing user aut
    ```
 
 3. **Set Up Environment Variables**:
-   Create a `.env` file in the project root and configure the following:
+   Create a `.env` file in the project root and copy the sample.env file and configures variables ex-
    ```env
    DATABASE_URL=postgresql://<username>:<password>@localhost:5432/<database_name>
    JWT_SECRET=your_jwt_secret_key
    PYTHON_BACKEND_URL=http://<python-backend-host>:<port>
    ```
+   .... etc.
 
 4. **Run Database Migrations**:
    ```bash

@@ -4,7 +4,7 @@ import { User } from './user.entity';
 import { Roles } from '../common/roles.decorator';
 import { RolesGuard } from '../common/roles.guard';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateUserDto, UpdateUserRoleDto } from './users.dto';
 
 @Controller('users')
@@ -15,6 +15,7 @@ export class UsersController {
 
   @Get()
   @Roles('admin')  // Only accessible by users with 'admin' role
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({
     status: 200,
@@ -27,6 +28,7 @@ export class UsersController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get user by ID' })
+  @ApiBearerAuth()
   @ApiParam({
     name: 'id',
     description: 'The unique identifier of the user',
@@ -47,6 +49,7 @@ export class UsersController {
 
   @Post('create')
   @Roles('admin')  // Only accessible by users with 'admin' role
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
@@ -64,6 +67,7 @@ export class UsersController {
 
   @Post(':id/role')
   @Roles('admin')  // Only accessible by users with 'admin' role
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Update the user\'s role' })
   @ApiParam({
     name: 'id',
@@ -86,6 +90,7 @@ export class UsersController {
 
   @Delete(':id')
   @Roles('admin')  // Only accessible by users with 'admin' role
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete a user' })
   @ApiParam({
     name: 'id',

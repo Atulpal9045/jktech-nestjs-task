@@ -3,7 +3,7 @@ import { DocumentsService } from './documents.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiConsumes } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiConsumes, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateDocumentDto, GetDocumentDto } from './documents.dto';
 
 @ApiTags('Documents')
@@ -12,6 +12,7 @@ export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
 
   @Post('upload')
+  @ApiBearerAuth()
   @ApiConsumes('multipart/form-data') // Specify that the endpoint consumes 'multipart/form-data'
   @ApiResponse({
     status: 201,
@@ -35,6 +36,7 @@ export class DocumentsController {
   }
 
   @Get()
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all documents' })
   @ApiResponse({
     status: 200,
@@ -46,6 +48,7 @@ export class DocumentsController {
   }
 
   @Get(':id')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get a document by ID' })
   @ApiParam({
     name: 'id',
@@ -66,6 +69,7 @@ export class DocumentsController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete a document' })
   @ApiParam({
     name: 'id',
