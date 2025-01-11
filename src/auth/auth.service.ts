@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
+    @Inject(forwardRef(()=> UsersService))
+    private userService: UsersService,
     private jwtService: JwtService,
   ) {}
 
@@ -21,7 +22,7 @@ export class AuthService {
       throw new Error('Invalid credentials');
     }
 
-    const payload = { username: user.username, sub: user.id, role: user.role };
+    const payload = { username: user.email, sub: user.id, role: user.role };
     const accessToken = this.jwtService.sign(payload);
     return { access_token: accessToken };
   }

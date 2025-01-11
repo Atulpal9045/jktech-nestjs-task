@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Document } from './document.entity';
+import { Document } from './documents.entity';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -28,7 +28,7 @@ export class DocumentsService {
   }
 
   async deleteDocument(id: number): Promise<void> {
-    const document = await this.documentsRepository.findOne(id);
+    const document = await this.documentsRepository.findOne({where: {id}});
     if (document) {
       // Delete the file from the file system
       fs.unlinkSync(document.path);
@@ -38,6 +38,6 @@ export class DocumentsService {
   }
 
   async getDocument(id: number): Promise<Document> {
-    return this.documentsRepository.findOne(id);
+    return this.documentsRepository.findOne({where: {id}});
   }
 }

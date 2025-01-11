@@ -1,16 +1,29 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import { AxiosResponse } from 'axios';
 
 @Injectable()
 export class IngestionService {
   private ingestionStatus: string = 'idle';
 
-  triggerIngestion() {
+  constructor(private readonly httpService: HttpService) {}
+    
+  // Trigger the ingestion process by calling an external Python API
+  async triggerIngestion(): Promise<void> {
     this.ingestionStatus = 'in-progress';
-    // Here, we would make an API call to trigger the ingestion process in the Python backend.
-    // For now, we'll simulate this with a timeout.
-    setTimeout(() => {
-      this.ingestionStatus = 'completed';
-    }, 5000); // Simulate a process that takes 5 seconds
+
+    try {
+      const response: AxiosResponse = await this.httpService.post('http://python-backend/ingest', { data: 'some data' }).toPromise();
+      
+      if (response.status === 200) {
+        this.ingestionStatus = 'completed';
+      } else {
+        this.ingestionStatus = 'failed';
+      }
+    } catch (error) {
+      this.ingestionStatus = 'failed';
+      console.error('Ingestion failed:', error);
+    }
   }
 
   getIngestionStatus(): string {
